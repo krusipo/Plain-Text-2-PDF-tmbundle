@@ -10,12 +10,14 @@ __date__ = ""
 class MetaData(object):
 	def __init__(self, plain_file):
 		
-		for key, value in self.file_vars(plain_file).iteritems():
+		for key, value in self.__file_vars(plain_file).iteritems():
 			self.__dict__[key] = value
 
 		
-	def file_vars(self, plain_file):
-		
+	def __file_vars(self, plain_file):
+		"""
+		Set dictionary for meta object.
+		"""
 		local_vars = open(plain_file, 'r')
 		simple_vars = local_vars.readline()
 		file_meta = {}
