@@ -177,6 +177,21 @@ class DomTemplate(object):
 			font-style: italic;\
 			margin-left:2em;\
 		}\
+		/*==========Endnotes=========*/\
+		.footnote-ref {\
+			-pdf-outline: true;\
+		}\
+		.footnote-ref a {\
+			font-weight:bold;\
+			text-decoration:none;\
+			color:gray;\
+		}\
+		.footnotes {\
+			font-size:86%;\
+		}\
+		.footnoteBackLink {\
+			display:none; /*none to hide ugly bug*/\
+		}\
 		'
 		self.html = '<!DOCTYPE HTML><html><head><title>$title</title>\
 						<meta charset="utf-8" /><style type="text/css">$css_file</style></head><body>\
