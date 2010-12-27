@@ -71,7 +71,7 @@ class DomTemplate(object):
 		/*==========Page=========*/\
 		@page {\
 			size: a4 ;\
-			margin: 3cm;/*Must be unit cm*/\
+			margin: 2.5cm;/*Must be unit cm*/\
 			/*===Frame=======*/\
 			@frame footer {\
 				-pdf-frame-content: simple_text_foot;\
@@ -79,9 +79,6 @@ class DomTemplate(object):
 				margin-left: 1cm;\
 				margin-right: 1cm;\
 				height: 1cm;\
-				border-top-style:solid;\
-				border-top-width:0.2cm;\
-				border-top-color:rgb(229,229,229);\
 			}\
 			@frame header {\
 				-pdf-frame-content: simple_text_head;\
@@ -91,6 +88,12 @@ class DomTemplate(object):
 				margin-right: 1cm;\
 				height: 1cm;\
 			}\
+		}\
+		#simple_text_foot {\
+		color:rgb(153,157,156)\
+		}\
+		#simple_text_head {\
+		color:rgb(153,157,156)\
 		}\
 		/*==========Syntax Highligting=========*/\
 		.codehilite{background:#fff;}\
@@ -192,14 +195,30 @@ class DomTemplate(object):
 		.footnoteBackLink {\
 			display:none; /*none to hide ugly bug*/\
 		}\
+		/*==========Tables=========*/\
+		.simple_plain_text th.id, .simple_plain_text td.id {\
+			width: 40px;\
+		}\
+		.simple_plain_text td {\
+			width:250px;\
+		}\
+		.simple_plain_text table {\
+			-pdf-keep-in-frame-mode: shrink;\
+		}\
+		.simple_plain_text th,td.id {\
+			background-color:ghostWhite;\
+		}\
+		.simple_plain_text tr {\
+			border: 1px solid #DEDEDE\
+		}\
 		'
 		self.html = '<!DOCTYPE HTML><html><head><title>$title</title>\
 						<meta charset="utf-8" /><style type="text/css">$css_file</style></head><body>\
 						<table id="simple_text_head"><tr><td>$title</td>\
 						<td align="right"><p> $author </p></td></tr></table>\
 						<div class="toc"> $simple_toc </div>\
-						<div id="simple_plain_text">$plain_text</div>\
-						<table id="simple_text_foot"><tr><td>$date</td>\
+						<div class="simple_plain_text">$plain_text</div>\
+						<table id="simple_text_foot"><tr><td><p> $date </p></td>\
 						<td align="right"> <p> <pdf:pagenumber> </p> </td></tr></table>\
 						</body></html>'
 		
@@ -207,15 +226,13 @@ class DomTemplate(object):
 		from string import Template
 		references = self._meta.__dict__.copy()
 		references['plain_text'] = self.plain_text
-		file_css = ""
+		references['css_file'] = self.css
+		references['simple_toc'] = ''
 		if "css" in self._meta.__dict__:
-			file_css = get_file_content(meta.css)
+			references['css_file'] = get_file_content(meta.css)
 			
-		references['css_file'] = join_string([self.css,file_css])
 		if self._meta.toc is True:
 			references['simple_toc'] = '<pdf:toc />'
-		else:
-			references['simple_toc'] = ''
 		
 		html = Template(self.html).substitute(references)
 		return html
@@ -238,7 +255,7 @@ def plain_to_hmtl(plain_file):
 def markdown(plain_file):
 	"""Return plainfile of type markdown as html"""
 	import markdown2
-	return markdown2.markdown_path(plain_file, extras=["code-color","footnotes"])
+	return markdown2.markdown_path(plain_file, extras=["code-color","footnotes", "code-friendly"])
 
 def get_file_content(_file):
 	"""Return String - filecontents
