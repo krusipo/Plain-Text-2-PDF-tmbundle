@@ -2,6 +2,7 @@ import os
 import sys
 import getopt
 import os.path
+import cStringIO
 
 __version__ = "0.3"
 __author__ = "Jonas Odencrants"
@@ -52,28 +53,154 @@ class MetaData(object):
 		 
 		
 class DomTemplate(object):
-	
+	"""HTML template to convert to pdf"""
 	def __init__(self, meta_obj):
 		self._meta = meta_obj
-		self.css = None
 		self.plain_text = None
+		self.css = '\
+		/*==========Body=========*/\
+		body {\
+			font-size: 110%; /* Base font size: 14px */\
+			font-family: "Trebuchet MS", Trebuchet, "Lucida Sans Unicode",\
+			"Lucida Grande", "Lucida Sans", Arial, sans-serif;\
+			color:rgb(51,51,51);\
+		}\
+		a {\
+		color:rgb(65,142,219); \
+		}\
+		/*==========Page=========*/\
+		@page {\
+			size: a4 ;\
+			margin: 3cm;/*Must be unit cm*/\
+			/*===Frame=======*/\
+			@frame footer {\
+				-pdf-frame-content: simple_text_foot;\
+				bottom: 1cm;\
+				margin-left: 1cm;\
+				margin-right: 1cm;\
+				height: 1cm;\
+				border-top-style:solid;\
+				border-top-width:0.2cm;\
+				border-top-color:rgb(229,229,229);\
+			}\
+			@frame header {\
+				-pdf-frame-content: simple_text_head;\
+				top: 1cm;\
+				margin-bottom: 1cm;\
+				margin-left: 1cm;\
+				margin-right: 1cm;\
+				height: 1cm;\
+			}\
+		}\
+		/*==========Syntax Highligting=========*/\
+		.codehilite{background:#fff;}\
+		.codehilite .c{color:#998;font-style:italic;}\
+		.codehilite .err{color:#a61717;background-color:#e3d2d2;}\
+		.codehilite .k{font-weight:bold;}\
+		.codehilite .o{font-weight:bold;}\
+		.codehilite .cm{color:#998;font-style:italic;}\
+		.codehilite .cp{color:#999;font-weight:bold;}\
+		.codehilite .c1{color:#998;font-style:italic;}\
+		.codehilite .cs{color:#999;font-weight:bold;font-style:italic;}\
+		.codehilite .gd{color:#000;background-color:#fdd;}\
+		.codehilite .gd .x{color:#000;background-color:#faa;}\
+		.codehilite .ge{font-style:italic;}\
+		.codehilite .gr{color:#a00;}\
+		.codehilite .gh{color:#999;}\
+		.codehilite .gi{color:#000;background-color:#dfd;}\
+		.codehilite .gi .x{color:#000;background-color:#afa;}\
+		.codehilite .go{color:#888;}\
+		.codehilite .gp{color:#555;}\
+		.codehilite .gs{font-weight:bold;}\
+		.codehilite .gu{color:#800080;font-weight:bold;}\
+		.codehilite .gt{color:#a00;}\
+		.codehilite .kc{font-weight:bold;}\
+		.codehilite .kd{font-weight:bold;}\
+		.codehilite .kp{font-weight:bold;}\
+		.codehilite .kr{font-weight:bold;}\
+		.codehilite .kt{color:#458;font-weight:bold;}\
+		.codehilite .m{color:#099;}\
+		.codehilite .s{color:#d14;}\
+		.codehilite .na{color:#008080;}\
+		.codehilite .nb{color:#0086B3;}\
+		.codehilite .nc{color:#458;font-weight:bold;}\
+		.codehilite .no{color:#008080;}\
+		.codehilite .ni{color:#800080;}\
+		.codehilite .ne{color:#900;font-weight:bold;}\
+		.codehilite .nf{color:#900;font-weight:bold;}\
+		.codehilite .nn{color:#555;}\
+		.codehilite .nt{color:#000080;}\
+		.codehilite .nv{color:#008080;}\
+		.codehilite .ow{font-weight:bold;}\
+		.codehilite .w{color:#bbb;}\
+		.codehilite .mf{color:#099;}\
+		.codehilite .mh{color:#099;}\
+		.codehilite .mi{color:#099;}\
+		.codehilite .mo{color:#099;}\
+		.codehilite .sb{color:#d14;}\
+		.codehilite .sc{color:#d14;}\
+		.codehilite .sd{color:#d14;}\
+		.codehilite .s2{color:#d14;}\
+		.codehilite .se{color:#d14;}\
+		.codehilite .sh{color:#d14;}\
+		.codehilite .si{color:#d14;}\
+		.codehilite .sx{color:#d14;}\
+		.codehilite .sr{color:#009926;}\
+		.codehilite .s1{color:#d14;}\
+		.codehilite .ss{color:#990073;}\
+		.codehilite .bp{color:#999;}\
+		.codehilite .vc{color:#008080;}\
+		.codehilite .vg{color:#008080;}\
+		.codehilite .vi{color:#008080;}\
+		.codehilite .il{color:#099;}\
+		pre {\
+		background-color: ghostWhite !important;\
+		border: 1px solid #DEDEDE !important;\
+		font-size: 12px !important;\
+		line-height: 1.5em !important;\
+		margin: 1em;\
+		overflow: auto !important;\
+		padding: 0.5em !important;\
+		}\
+		/*==========Table of Content=========*/\
+		pdftoc {\
+			color: #666;\
+		}\
+		pdftoc.pdftoclevel0 {\
+			font-weight: bold;\
+			margin-top: 0.5em;\
+		}\
+		pdftoc.pdftoclevel1 {\
+			margin-left: 1em;\
+		}\
+		pdftoc.pdftoclevel2 {\
+			font-style: italic;\
+			margin-left:2em;\
+		}\
+		'
 		self.html = '<!DOCTYPE HTML><html><head><title>$title</title>\
 						<meta charset="utf-8" /><style type="text/css">$css_file</style></head><body>\
-						<table id="simple_text_head"><tr><td class="simple_text_title">$title</td>\
-						<td class="simple_text_author">$author</td></tr></table>\
+						<table id="simple_text_head"><tr><td>$title</td>\
+						<td align="right"><p> $author </p></td></tr></table>\
+						<div class="toc"> $simple_toc </div>\
 						<div id="simple_plain_text">$plain_text</div>\
-						<table id="simple_text_foot"><tr><td class="simple_text_date">$date</td>\
-						<td class="simple_text_pageno"><pdf:pagenumber></td></tr></table>\
+						<table id="simple_text_foot"><tr><td>$date</td>\
+						<td align="right"> <p> <pdf:pagenumber> </p> </td></tr></table>\
 						</body></html>'
-		
-	def appendTo(tag):
-		pass
 		
 	def toString(self):
 		from string import Template
 		references = self._meta.__dict__.copy()
-		references['css_file'] = self.css
 		references['plain_text'] = self.plain_text
+		file_css = ""
+		if "css" in self._meta.__dict__:
+			file_css = get_file_content(meta.css)
+			
+		references['css_file'] = join_string([self.css,file_css])
+		if self._meta.toc is True:
+			references['simple_toc'] = '<pdf:toc />'
+		else:
+			references['simple_toc'] = ''
 		
 		html = Template(self.html).substitute(references)
 		return html
@@ -84,6 +211,9 @@ class DomTemplate(object):
 # ///-----Global functions.
 
 def plain_to_hmtl(plain_file):
+	"""Return String - file content parsed as html
+	Pre: plain_file is supported plain-file-syntax.
+	"""
 	plain_type = {".md" : markdown,
 				".MD" : markdown,
 	}
@@ -91,6 +221,7 @@ def plain_to_hmtl(plain_file):
 	return plain_type[file_type](plain_file)
 
 def markdown(plain_file):
+	"""Return plainfile of type markdown as html"""
 	import markdown2
 	return markdown2.markdown_path(plain_file, extras=["code-color","footnotes"])
 
@@ -103,6 +234,27 @@ def get_file_content(_file):
 	data.close()
 	return content
 	
+def createPDF(meta, html):
+	"""
+	Creates a pdf and saves at destination.
+	"""
+	import ho.pisa as pisa
+	pdfed = pisa.CreatePDF(
+        cStringIO.StringIO(html), file(meta.dir + meta.file_name+".pdf", "wb"))
+
+	if pdfed.err:
+		print "*** %d ERRORS OCCURED" % pdf.err
+	return pdfed
+	
+def join_string(str_list):
+	""" Return String - content from items.
+	Pre: str_list as list of strings
+	"""
+	file_string = cStringIO.StringIO()
+	for _str in str_list:
+		file_string.write(_str)
+	return file_string.getvalue()
+	
 def usage():
 	pass
 	
@@ -110,7 +262,10 @@ def build(_file):
 	meta = MetaData(_file)
 	dom = DomTemplate(meta)
 	dom.plain_text = plain_to_hmtl(_file).encode( "utf-8" )
+	createPDF(meta,dom.toString())
 	print(dom.toString())
+		
+	
 	
 if __name__ == "__main__":
 	try:
@@ -119,6 +274,7 @@ if __name__ == "__main__":
 		print str(err) 
 		usage()
 		sys.exit(2)
+		
 	for opt, arg in opts:
 		if opt in ("-h", "--help"):
 			usage()
