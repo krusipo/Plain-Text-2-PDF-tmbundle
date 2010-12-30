@@ -297,8 +297,6 @@ def build(_file):
 	createPDF(meta,dom.toString())
 	print(dom.toString())
 		
-	
-	
 if __name__ == "__main__":
 	try:
 		opts, args = getopt.gnu_getopt(sys.argv[1:], "hf:", ["help", "file="])
