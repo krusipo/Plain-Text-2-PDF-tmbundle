@@ -4,9 +4,8 @@ import getopt
 import os.path
 import cStringIO
 
-__version__ = "0.3"
 __author__ = "Jonas Odencrants"
-__date__ = "2010-12-25"
+__date__ = "2010-12-31"
 
 class MetaData(object):
 	"""A class with passable meta and settings."""
