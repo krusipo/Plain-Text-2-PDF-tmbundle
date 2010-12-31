@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>contactEmailRot13</key>
+	<string>xehfvcb@tznvy.pbz</string>
+	<key>contactName</key>
+	<string>Jonas Odencrants</string>
+	<key>description</key>
+	<string>Tool to convert documents to pdf &lt;a href=&quot;https://github.com/krusipo/SimpleText2Pdf&quot;&gt;Source on Github&lt;/a&gt;</string>
+	<key>name</key>
+	<string>Plain Text to PDF</string>
+	<key>uuid</key>
+	<string>D074D421-572F-466F-87B1-96A2B2DE2A10</string>
+	<key>ordering</key>
+	<array>
+		<string>00307080-104C-4E41-B346-ED3655240EEE</string>
+	</array>
+</dict>
+</plist>
