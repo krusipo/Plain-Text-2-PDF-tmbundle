@@ -44,7 +44,7 @@ other eye-candy.
 	set printfont=courier:h9 "Use courier as font
 	set syntax on
 
-### Standalone Plain to PDf
+### Standalone Plain to PDF
 The Plain to PDF functionality is available as a standalone CLI-based app,
 just download that file and use it as below after dependencies are met.
 $ python markdown2pdf.py -h, --help
