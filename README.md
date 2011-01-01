@@ -35,6 +35,10 @@ That makes a bunch of stuff possible but also forces meta to correspond when
 absolute/path! to a template is supplied. If need to change the css file I would
 recommend to read documentation for dependencies.
 
+Markdown tables are currently not supported its on my to-do list, to have 
+code syntax highlighting in documentation one must add language declaration:
+ex {:::python} prior to indented code block and have pygments installed.
+
 
 ## Installation 
 
@@ -93,3 +97,4 @@ just download that file and use it as below after dependencies are met.
 ## TO-DO 
     * Write install script for eggs
     * Add option output to html file
+    * Add support for tables to somewhere.
