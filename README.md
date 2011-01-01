@@ -39,6 +39,8 @@ Markdown tables are currently not supported its on my to-do list, to have
 code syntax highlighting in documentation one must add language declaration:
 ex {:::python} prior to indented code block and have pygments installed.
 
+Example output as pdf of this [README](https://github.com/krusipo/Plain-Text-2-PDF-tmbundle/blob/master/README.md.pdf)
+
 
 ## Installation 
 
