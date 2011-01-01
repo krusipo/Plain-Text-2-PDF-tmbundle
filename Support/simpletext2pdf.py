@@ -110,7 +110,7 @@ def get_file_content(_file):
 	
 def createPDF(meta, html):
 	"""
-	Creates a pdf and saves at destination.
+	Creates a pdf and saves at project root.
 	"""
 	import ho.pisa as pisa
 	pdfed = pisa.CreatePDF(
@@ -119,6 +119,10 @@ def createPDF(meta, html):
 	if pdfed.err:
 		print "*** %d ERRORS OCCURED" % pdf.err
 	return pdfed
+	
+def createHTML():
+	"""Create a html and saves at project root"""
+	pass
 	
 def join_string(str_list):
 	""" Return String - content from items.
@@ -132,12 +136,12 @@ def join_string(str_list):
 def usage():
 	pass
 	
+	
 def build(_file):
 	meta = MetaData(_file)
 	dom = DomTemplate(meta)
 	dom.plain_text = plain_to_hmtl(_file).encode( "utf-8" )
 	createPDF(meta,dom.toString())
-	print(dom.toString())
 		
 if __name__ == "__main__":
 	try:
