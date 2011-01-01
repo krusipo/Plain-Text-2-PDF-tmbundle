@@ -41,7 +41,7 @@ class MetaData(object):
 			<!--Simple author:The Author; -->")
 		
 		finally:
-			file_meta["dir"] = os.path.dirname(plain_file)
+			file_meta["dir"] = os.path.dirname(plain_file)+'/'
 			file_meta["file_name"] = os.path.basename(plain_file)
 			
 			
