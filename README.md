@@ -23,10 +23,17 @@ I would prefer the first one install with git from the command line.
    * Install from git
         $ mkdir -p ~/Library/Application\ Support/TextMate/Bundles
         $ cd ~/Library/Application\ Support/TextMate/Bundles
-        $ git clone 
+        $ git clone git://github.com/krusipo/Plain-Text-2-PDF-tmbundle.git "Plain Text 2 PDF.tmbundle"
+        $ osascript -e 'tell app "TextMate" to reload bundles'
 
    * Install without git
-   // Instructions here 
+        $ mkdir -p ~/Library/Application\ Support/TextMate/Bundles
+        $ cd ~/Library/Application\ Support/TextMate/Bundles
+        $ wget --no-check-certificate https://github.com/krusipo/Plain-Text-2-PDF-tmbundle/tarball/master
+        $ tar -zxf krusipo-Plain-Text-2-PDF-tmbundle*.tar.gz
+        $ rm krusipo-Plain-Text-2-PDF-tmbundle*.tar.gz 
+        $ mv krusipo-Plain-Text-2-PDF-tmbundle* "Plain Text 2 PDF.tmbundle"
+        $ osascript -e 'tell app "TextMate" to reload bundles'
 
 ### Dependencies
 **Plain to PDF:** requires the following eggs the ones marked optional 
@@ -55,8 +62,7 @@ $ python markdown2pdf.py -h, --help
 	# print help, then exit.
 
 $ python markdown2pdf.py -f, --file
-	# Create PDF with defaults from file.
+	# Create PDF with defaults or overidden from file.
 				
 ## TO-DO 
-    * Finish the bundle
     * Write install script for eggs
