@@ -17,9 +17,13 @@ at the project paths root, tailored with options from emac styled comment variab
 
 ## Installation 
 
-When dependencies (see below) are met. // write shell install script.
+When dependencies (see below) are met, you have two option to install the bundle,
+I would prefer the first one install with git from the command line.
+
    * Install from git
-   // Instructions here
+        $ mkdir -p ~/Library/Application\ Support/TextMate/Bundles
+        $ cd ~/Library/Application\ Support/TextMate/Bundles
+        $ git clone 
 
    * Install without git
    // Instructions here 
