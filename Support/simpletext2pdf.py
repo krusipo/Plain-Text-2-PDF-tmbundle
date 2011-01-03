@@ -134,7 +134,7 @@ def join_string(str_list):
 	return file_string.getvalue()
 	
 def usage():
-	pass
+	print("somebody help me please...")
 	
 	
 def build(_file):
